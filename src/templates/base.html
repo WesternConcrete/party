@@ -1,0 +1,21 @@
+<!doctype html>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{% block title %}Party Project{% endblock %}</title>
+</head>
+<body>
+	{% include 'navbar.html' %}
+
+	{% block content %}
+		<h2>Home</h2>
+	{% endblock %}
+
+	{% if user.is_anonymous %}
+		<p>Login <a href="/login">Here</a></p>
+	{% else %}
+		<p>User: {{ user.get_username }} - <a href="/logout">Logout</a></p>
+	{% endif %}
+
+	</body>
+</html>
