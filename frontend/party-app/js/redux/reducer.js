@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux'
 
-import {UPDATE_USER, UPDATE_CONTACT, UPDATE_LOCATION} from './actions'
+import {UPDATE_USER, UPDATE_CONTACT, UPDATE_LOCATION, LOGIN_SUCCESS} from './actions'
 
 const merge = (prev, next) => Object.assign({}, prev, next)
 
@@ -21,11 +21,16 @@ const userReducer = (state = {}, action) => {
 }
 
 const locationReducer = (state = {
-              latitude: 33.6595,
-              longitude: -117.9988,
+              latitude: 0,
+              longitude: 0,
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421}, action) => {
   if (action.type === UPDATE_LOCATION) return merge(state, action.payload)
+  return state
+}
+
+const loginReducer = (state = false, action) => {
+  if (action.type === LOGIN_SUCCESS) return action.payload
   return state
 }
 
@@ -41,6 +46,7 @@ const readyReducer = combineReducers({
 const reducer = combineReducers({
   location: locationReducer,
   readies: readyReducer,
+  loggedIn: loginReducer,
 })
 
 export default reducer

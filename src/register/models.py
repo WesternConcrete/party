@@ -51,10 +51,6 @@ class ExtendedUser(models.Model):
 	def add_pending_friendreq(self, req):
 		self.pending_friend_requests.add(req)
 
-	#call this with CurrentExtendedUser.remove_friend(OtherExtendedUser)
-	def remove_friend(self, user):
-		self.friends.remove(user)
-		user.friends.remove(self)
 
 #group methods
 	def add_group(self, group):

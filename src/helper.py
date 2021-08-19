@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from friendreq.models import FriendReq
 from groups.models import Group
 from parties.models import Party
+from register.serializers import ExtendedUserSerializer
 print("""
 THIS LIBRARY IS SIMPLY USED TO IMPORT ALL EXISTING MODELS AND TO PROVIDE A FEW FUNCTIONS THAT MAKE DEBUGGING EASIER.
 

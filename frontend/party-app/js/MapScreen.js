@@ -82,7 +82,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {updateLocation: updateLocation})(MapScreen)
 
-
+//temporary \/\/\/
 function ProfileImage() { 
   return (
             <View style={styles.imageContainer}>
@@ -91,7 +91,7 @@ function ProfileImage() {
    
   );
 }
-
+//^^^
 
 
 const styles = StyleSheet.create({

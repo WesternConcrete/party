@@ -1,7 +1,7 @@
 // action types
 export const UPDATE_USER = 'UPDATE_USER'
 export const UPDATE_CONTACT = 'UPDATE_CONTACT'
-
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const UPDATE_LOCATION = "UPDATE_LOCATION"
 
 // action creators
@@ -18,4 +18,9 @@ export const addContact = newContact => ({
 export const updateLocation = location => ({
   type: UPDATE_LOCATION,
   payload: location,
+})
+
+export const loginUser = loginInput => ({
+  type: LOGIN_SUCCESS,
+  payload: loginInput,
 })
