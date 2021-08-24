@@ -6,11 +6,11 @@ import Expo from "expo"
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 
-import store from "./redux/store"
+import {store} from "./redux/store"
 import { updateLocation } from "./redux/actions.js"
 import { connect } from 'react-redux'
 
-
+import {API_HOME} from "./helperJS/api"
 import mapStyle from "./mapstyle.js"
 import Sidebars from "./mapview_sidebars.js"
 
@@ -41,13 +41,21 @@ class MapScreen extends React.Component {
 			this.props.updateLocation(coords)
 			console.log(store.getState())
 
+
 			
 
 	}
 	componentDidMount() {
 		this._getLocationAsync()
-		console.log(store.getState())
 
+	}
+
+	_profileImage = () => {
+		if (this.props.userImage !== null){
+			return API_HOME + this.props.userImage
+		} else {
+			return "https://www.eguardtech.com/wp-content/uploads/2018/08/Network-Profile.png"
+		}
 	}
 
 	render() {
@@ -65,11 +73,11 @@ class MapScreen extends React.Component {
 		    </MapView>
 		    <Sidebars side='right'/>
 		    <Sidebars side='left'/>
-		    <TouchableOpacity style={styles.recenter_map} onPress={() => {this._getLocationAsync()}}>
+		    <TouchableOpacity style={styles.recenter_map} onPress={() => {this._getLocationAsync(); console.log(API_HOME + this.props.userImage)}}>
 		    	<Ionicons name={"navigate-circle"} color={'white'} size={40} />
 		    </TouchableOpacity>
 		    <TouchableOpacity style={styles.open_profile} onPress={() => this.props.navigation.navigate('MainProfileScreen')}>
-		    	<ProfileImage/>
+		    	<ProfileImage path={this._profileImage()}/>
 		    </TouchableOpacity>
 			</View>
 		)
@@ -78,18 +86,21 @@ class MapScreen extends React.Component {
 
 const mapStateToProps = state => ({
   location: state.location,
+  userImage: state.user.userData.profile_image
 })
 
 export default connect(mapStateToProps, {updateLocation: updateLocation})(MapScreen)
-
+//uri: "https://www.eguardtech.com/wp-content/uploads/2018/08/Network-Profile.png"
 //temporary \/\/\/
-function ProfileImage() { 
-  return (
-            <View style={styles.imageContainer}>
-                <Image source={{ uri: "https://www.eguardtech.com/wp-content/uploads/2018/08/Network-Profile.png" }} style={{ width: 60, height: 60 }} />
-            </View>
-   
-  );
+class ProfileImage extends React.Component { 
+  render() {
+	  return (
+	            <View style={styles.imageContainer}>
+	                <Image source={{uri: this.props.path}} style={{ width: 60, height: 60 }} />
+	            </View>
+	   
+	  )
+  }
 }
 //^^^
 
@@ -121,7 +132,6 @@ const styles = StyleSheet.create({
 
   },
   open_profile: {
-  	opacity:.85,
   	position: 'absolute', 
   	top: '5%',
   	right: "5%",

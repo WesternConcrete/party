@@ -26,19 +26,21 @@ from .serializers import ExtendedUserSerializer
 # 	return render(response, "register/register.html", {"form": form})
 
 
-#------------ register new account form----------------
+#------------ register new account form^----------------
 @method_decorator(csrf_exempt, name='dispatch')
 class extended_user_list(View):
 	def get(self, request):
-		ex_users = ExtendedUser.objects.all()
-		serializer = ExtendedUserSerializer(ex_users, many=True)
-		return JsonResponse(serializer.data, safe=False)
+		# ex_users = ExtendedUser.objects.all()
+		# serializer = ExtendedUserSerializer(ex_users, many=True)
+		return JsonResponse({})
 
 	def post(self, request):
-		# data = JSONParser().parse(request)
+		data = JSONParser().parse(request)
 		# serializer = ExtendedUserSerializer(data=data)
 		# if serializer.is_valid():
 		# 	serializer.save()
 		# 	return JsonResponse(serializer.data, status=201)
-		print(request.body)
+		print(data)
 		return JsonResponse({})
+
+

@@ -18,7 +18,7 @@ class MainStack extends React.Component {
   render() {
 	  return (
 	    <NavigationContainer>
-	    	{ this.props.loggedIn? 
+	    	{ this.props.user.userData? 
 		    <Stack.Navigator
 		        screenOptions={({ navigation, route }) => ({
 		            headerShown: route.name !== "MainTabNav",
@@ -52,7 +52,7 @@ class MainStack extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  loggedIn: state.loggedIn,
+  user: state.user,
 })
 
 export default connect(mapStateToProps)(MainStack)

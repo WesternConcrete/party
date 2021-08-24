@@ -41,3 +41,5 @@ def createGroup(groupname, members):
 	group_object = Group.objects.create(name=groupname)
 	for member in members:
 		member.add_group(group_object)
+
+

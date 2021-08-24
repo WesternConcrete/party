@@ -7,11 +7,18 @@ import {
   Button,
   TouchableOpacity,
   Image,
-  Alert
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-import { loginUser } from "./redux/actions"
+
+import { loginUser, logoutUser } from "./redux/actions"
 import { connect } from 'react-redux'
+
+import {store} from './redux/store'
+import DeleteInput from "./helperJS/deleteInput"
 
 class LoginScreen extends React.Component {
   state = {
@@ -19,48 +26,66 @@ class LoginScreen extends React.Component {
     password: '',
   }
 
+  componentDidMount() {
+    this.props.logoutUser()
+    setTimeout(() => this.props.logoutUser(), 0)
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Image style={styles.inputIcon} source={require('../assets/png.png')}/>
-        <View style={styles.inputContainer}>
-          <TextInput style={styles.inputs}
-              placeholder="Username"
-              underlineColorAndroid='transparent'
-              onChangeText={(username) => this.setState({username})}/>
-        </View>
-        
-        <View style={styles.inputContainer}>
-          <TextInput style={styles.inputs}
-              placeholder="Password"
-              secureTextEntry={true}
-              underlineColorAndroid='transparent'
-              onChangeText={(password) => this.setState({password})}/>
-        </View>
+        <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : null}
+                style={styles.container}
+            >
+          <Image style={styles.inputIcon} source={require('../assets/png.png')}/>
+          <View style={styles.linkContainer}>
+            <Text style={{color: '#fff'}}>{this.props.errMessage}</Text>
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput style={styles.inputs}
+                autoCapitalize="none"
+                placeholder="Username"
+                underlineColorAndroid='transparent'
+                onChangeText={(username) => this.setState({username})}
+                value={this.state.username}/>
+            {this.state.username? <DeleteInput function={() => this.setState({username: ''})}/>: null}
+          </View>
+          
+          <View style={styles.inputContainer}>
+            <TextInput style={styles.inputs}
+                autoCapitalize="none"
+                placeholder="Password"
+                secureTextEntry={true}
+                underlineColorAndroid='transparent'
+                onChangeText={(password) => this.setState({password})}
+                value={this.state.password}/>
+            {this.state.password? <DeleteInput function={() => this.setState({password: ''})}/>: null}
+          </View>
 
-        <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]} onPress={() => {this.props.loginUser(true)}}>
-          <Text style={styles.loginText}>Login</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]} onPress={() => {this.props.loginUser(this.state.username, this.state.password)}}>
+            <Text style={styles.loginText}>Login</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.linkContainer} onPress={() => this.props.navigation.navigate("SignUp")}>
-            <Text style={styles.linkText}>Register</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.linkContainer} onPress={() => this.props.navigation.navigate("createUsername")}>
+              <Text style={styles.linkText}>Register</Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
 
-
-
-{/*        <TouchableOpacity style={styles.linkContainer}>
+/*        <TouchableOpacity style={styles.linkContainer}>
             <Text style={styles.linkText}>Forgot your password?</Text>
-        </TouchableOpacity>*/}
+        </TouchableOpacity>*/
 
-        
-      </View>
     );
   }
 }
 
+const mapStateToProps = state => ({
+    errMessage: state.user.errMessage,
+})
 
 
-export default connect(null, {loginUser: loginUser})(LoginScreen)
+
+export default connect(mapStateToProps, {loginUser, logoutUser})(LoginScreen)
 
 const styles = StyleSheet.create({
   container: {
@@ -68,6 +93,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#40364f',
+  },
+  keyboardViewContainer: {
+    alignItems: 'center',
   },
   inputContainer: {
       borderBottomColor: '#fff',
@@ -84,13 +112,13 @@ const styles = StyleSheet.create({
       fontSize: 20,
       height:45,
       marginLeft: 20,
-      marginRight: 20,
+      marginRight: 5,
       borderBottomColor: '#FFFFFF',
       flex:1,
   },
   inputIcon:{
     width:300,
-    height:170,
+    height:140,
     justifyContent: 'center',
   },
   buttonContainer: {
@@ -120,5 +148,8 @@ const styles = StyleSheet.create({
   },
   linkText: {
     color: "#fff",
-  }
+    fontWeight: 'bold', 
+    fontSize: 16,
+  },
+
 });

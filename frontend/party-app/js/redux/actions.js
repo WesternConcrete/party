@@ -1,8 +1,15 @@
+import {loginAttempt} from '../helperJS/api'
+
 // action types
 export const UPDATE_USER = 'UPDATE_USER'
 export const UPDATE_CONTACT = 'UPDATE_CONTACT'
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const UPDATE_LOCATION = "UPDATE_LOCATION"
+export const LOGIN_SENT = 'LOG_IN_SENT'
+export const LOGIN_FULFILLED = 'LOG_IN_FULFILLED'
+export const LOGIN_REJECTED = 'LOG_IN_REJECTED'
+export const LOGOUT = 'LOGOUT'
+
+
 
 // action creators
 export const updateUser = update => ({
@@ -20,7 +27,14 @@ export const updateLocation = location => ({
   payload: location,
 })
 
-export const loginUser = loginInput => ({
-  type: LOGIN_SUCCESS,
-  payload: loginInput,
-})
+export const loginUser = (username, password) => async dispatch => {
+  dispatch({type: LOGIN_SENT})
+  try {
+    const token = await loginAttempt(username, password)
+    dispatch({type: LOGIN_FULFILLED, payload: token})
+  } catch (err) {
+    dispatch({type: LOGIN_REJECTED, payload: err.message})
+  }
+}
+
+export const logoutUser = () => ({type: LOGOUT})

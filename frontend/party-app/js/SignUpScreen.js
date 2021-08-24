@@ -9,6 +9,8 @@ import {
   Image,
   Alert
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+
 
 export default class LoginView extends Component {
   state = {
@@ -24,6 +26,9 @@ export default class LoginView extends Component {
               placeholder="Username"
               underlineColorAndroid='transparent'
               onChangeText={(username) => this.setState({username})}/>
+          <TouchableOpacity style={{paddingRight: 12}} onPress={() => this.setState({username: ''})}>
+            <Text style={{color: "black"}}>asdasds</Text>
+          </TouchableOpacity>
         </View>
         
         <View style={styles.inputContainer}>
@@ -65,7 +70,7 @@ const styles = StyleSheet.create({
       fontSize: 20,
       height:45,
       marginLeft: 20,
-      marginRight: 20,
+      marginRight: 5,
       borderBottomColor: '#FFFFFF',
       flex:1,
   },

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import { loginUser } from "./redux/actions"
+import { logoutUser } from "./redux/actions"
 import { connect } from 'react-redux'
 
 
@@ -21,7 +21,7 @@ class MainProfileScreen extends React.Component {
 		return(
 			<View style={styles.container}>
 				<Text>MainProfileScreen</Text>
-		    <Button title="Sign Out" onPress={() => this.props.loginUser(false)}/>
+		    <Button title="Sign Out" onPress={() => this.props.logoutUser()}/>
 		   	<Button title="Debug" onPress={() => this.debug()}/>
 
 		  </View>
@@ -29,7 +29,7 @@ class MainProfileScreen extends React.Component {
 	}
 }
 
-export default connect(null, {loginUser: loginUser})(MainProfileScreen)
+export default connect(null, {logoutUser})(MainProfileScreen)
 
 const styles = StyleSheet.create({
   container: {

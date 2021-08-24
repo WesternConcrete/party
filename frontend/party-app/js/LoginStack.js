@@ -5,9 +5,18 @@ import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 
 import SignInScreen from "./SignInScreen";
-import SignUpScreen from "./SignUpScreen";
+import createUsername from "./createUsernameScreen";
+import createPassword from "./createPasswordScreen";
+import pickName from "./pickNameScreen"
+import createAccount from "./createAccountScreen"
 
 const Stack = createStackNavigator();
+
+const forFade = ({ current, closing }) => ({
+  cardStyle: {
+    opacity: current.progress,
+  },
+});
 
 export default function AuthStack() {
   return (
@@ -25,7 +34,7 @@ export default function AuthStack() {
 			       		<Ionicons
 				          name="chevron-back-outline"
 				          size={48}
-				          color="black"
+				          color="white"
 				        />
 		       		</TouchableOpacity>
     			),
@@ -33,8 +42,13 @@ export default function AuthStack() {
         	})
     	}
     >
-      <Stack.Screen name="SignIn" component={SignInScreen} />
-      <Stack.Screen name="SignUp" component={SignUpScreen} />
+      <Stack.Screen name="SignIn" component={SignInScreen} options={{ cardStyleInterpolator: forFade }}/>
+      <Stack.Screen name="createUsername" component={createUsername} options={{ cardStyleInterpolator: forFade }}/>
+      <Stack.Screen name="createPassword" component={createPassword} options={{ cardStyleInterpolator: forFade }}/>
+      <Stack.Screen name="pickName" component={pickName} options={{ cardStyleInterpolator: forFade }}/>
+      <Stack.Screen name="createAccount" component={createAccount} options={{ cardStyleInterpolator: forFade }}/>
+
+
     </Stack.Navigator>
   );
 }

@@ -1,8 +1,20 @@
-import {createStore} from 'redux'
+import {createStore, applyMiddleware} from 'redux'
+import thunk from 'redux-thunk'
+import { persistStore, persistReducer } from 'redux-persist'
+import createSecureStore from "redux-persist-expo-securestore";
 
-import {addContact} from './actions'
+const storage = createSecureStore();
+
 import reducer from './reducer'
 
-const store = createStore(reducer)
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['user'],
 
-export default store
+}
+
+const persistedReducer = persistReducer(persistConfig, reducer)
+
+export const store = createStore(persistedReducer, applyMiddleware(thunk))
+export const persistor = persistStore(store)
