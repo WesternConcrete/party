@@ -11,7 +11,7 @@ class ExtendedUser(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	friends = models.ManyToManyField('self',blank=True)
 	groups = models.ManyToManyField("groups.Group", blank=True)
-	birthday = models.DateField(auto_now=False, auto_now_add=False, default=datetime.date.today, blank = False)
+	birthday = models.DateField(blank = True, null=True)
 	invited_parties = models.ManyToManyField('parties.Party',blank=True,related_name='invited_parties')
 	attending_parties = models.ManyToManyField('parties.Party', blank=True,related_name='attending_parties')
 	hidden_parties = models.ManyToManyField('parties.Party',blank=True,related_name='hidden_parties')

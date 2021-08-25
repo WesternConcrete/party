@@ -22,7 +22,7 @@ class MapScreen extends React.Component {
 	state = {
     notificationY: new Animated.Value(-100),
     notificationMessage: null,
-    notificationLink: null
+    notificationLink: null,
   };
 
   notificationProcess = async () => {
@@ -78,7 +78,7 @@ class MapScreen extends React.Component {
 
 	componentDidMount() {
 		this._getLocationAsync()
-		setTimeout(() => this.notificationProcess(), 3000)
+		setTimeout(() => this.notificationProcess(), 3500)
 
 	}
 
@@ -108,7 +108,7 @@ class MapScreen extends React.Component {
 		    <Animated.View
 		    	style={[styles.fadingContainer, {transform: [{translateY: this.state.notificationY}]}]}
         >
-        	<TouchableOpacity style={styles.notification}>
+        	<TouchableOpacity style={styles.notification} onPress={() => this.props.navigation.navigate('MainProfileScreen')}>
           	<Text style={styles.fadingText}>{this.state.notificationMessage}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.fadeOut}>

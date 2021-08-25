@@ -32,17 +32,24 @@ class MainStack extends React.Component {
 				    		headerTransparent: true,
 		            headerLeft: () => (
 			    			<TouchableOpacity
-					          onPress={() => navigation.goBack()}
+					        onPress={() => navigation.goBack()}
 					   		  style={{paddingLeft: 10}}
-					       	>
+					      >
 					       		<Ionicons
 						          name="chevron-back-outline"
 						          size={48}
 						          color="white"
 						        />
 				       		</TouchableOpacity>
-		    			),
-		            
+		    				),
+		    				// headerRight: route.name === 'MainProfileScreen'? () => (
+		    				// <TouchableOpacity
+					     //    onPress={() => navigation.goBack()}
+					   		//   style={{paddingTop: 12, paddingRight: 20}}
+					     //  >
+					     //   		<Text style={{color: '#fff',fontSize: 24, fontWeight: 'bold', }}>Sign out</Text>
+				      //  	</TouchableOpacity>)
+		    				// : null
 		        	})
 		    	}
 		    >
