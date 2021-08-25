@@ -23,6 +23,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-image-crop-picker": "^0.36.2",
+    "react-native-interactable": "^2.0.1",
     "react-native-maps": "0.28.0",
     "react-native-pager-view": "^5.4.0",
     "react-native-paper": "^4.9.2",

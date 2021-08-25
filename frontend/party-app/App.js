@@ -10,7 +10,11 @@ import MainStack from "./js/MainStack"
 export default function App() {
   return (
     <Provider store={store}>
-      <MainStack/>
+      <PersistGate loading={null} persistor={persistor}>
+
+        <MainStack/>
+
+      </PersistGate>
     </Provider>
 
   );

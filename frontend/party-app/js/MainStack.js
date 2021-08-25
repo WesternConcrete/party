@@ -14,6 +14,12 @@ import LoginStack from "./LoginStack"
 
 const Stack = createStackNavigator();
 
+const forFade = ({ current, closing }) => ({
+  cardStyle: {
+    opacity: current.progress,
+  },
+});
+
 class MainStack extends React.Component {
   render() {
 	  return (
@@ -23,7 +29,6 @@ class MainStack extends React.Component {
 		        screenOptions={({ navigation, route }) => ({
 		            headerShown: route.name !== "MainTabNav",
 		            headerTitle: '',
-				    		headerTintColor: '#fff',
 				    		headerTransparent: true,
 		            headerLeft: () => (
 			    			<TouchableOpacity
@@ -33,7 +38,7 @@ class MainStack extends React.Component {
 					       		<Ionicons
 						          name="chevron-back-outline"
 						          size={48}
-						          color="black"
+						          color="white"
 						        />
 				       		</TouchableOpacity>
 		    			),
@@ -41,8 +46,8 @@ class MainStack extends React.Component {
 		        	})
 		    	}
 		    >
-		      <Stack.Screen name="MainTabNav" component={MainTabNav} />
-		      <Stack.Screen name="MainProfileScreen" component={MainProfileScreen} />
+		      <Stack.Screen name="MainTabNav" component={MainTabNav} options={{ cardStyleInterpolator: forFade }}/>
+		      <Stack.Screen name="MainProfileScreen" component={MainProfileScreen} options={{ cardStyleInterpolator: forFade }}/>
 		    </Stack.Navigator>:
 		    <LoginStack/>
 		  	}

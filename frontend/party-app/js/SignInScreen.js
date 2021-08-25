@@ -17,6 +17,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { loginUser, logoutUser } from "./redux/actions"
 import { connect } from 'react-redux'
 
+import HideKeyboard from "./helperJS/dismissKeyboard"
 import {store} from './redux/store'
 import DeleteInput from "./helperJS/deleteInput"
 
@@ -33,48 +34,47 @@ class LoginScreen extends React.Component {
 
   render() {
     return (
-        <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : null}
-                style={styles.container}
-            >
-          <Image style={styles.inputIcon} source={require('../assets/png.png')}/>
-          <View style={styles.linkContainer}>
-            <Text style={{color: '#fff'}}>{this.props.errMessage}</Text>
-          </View>
-          <View style={styles.inputContainer}>
-            <TextInput style={styles.inputs}
-                autoCapitalize="none"
-                placeholder="Username"
-                underlineColorAndroid='transparent'
-                onChangeText={(username) => this.setState({username})}
-                value={this.state.username}/>
-            {this.state.username? <DeleteInput function={() => this.setState({username: ''})}/>: null}
-          </View>
-          
-          <View style={styles.inputContainer}>
-            <TextInput style={styles.inputs}
-                autoCapitalize="none"
-                placeholder="Password"
-                secureTextEntry={true}
-                underlineColorAndroid='transparent'
-                onChangeText={(password) => this.setState({password})}
-                value={this.state.password}/>
-            {this.state.password? <DeleteInput function={() => this.setState({password: ''})}/>: null}
-          </View>
+        <HideKeyboard>
+          <KeyboardAvoidingView
+                  behavior={Platform.OS === "ios" ? "padding" : null}
+                  style={styles.container}
+              >
+            <Image style={styles.inputIcon} source={require('../assets/png.png')}/>
+            {this.props.errMessage? <Text style={{color: '#fff', paddingBottom: 10}}>{this.props.errMessage}</Text> : null}
+            <View style={styles.inputContainer}>
+              <TextInput style={styles.inputs}
+                  autoCapitalize="none"
+                  placeholder="Username"
+                  underlineColorAndroid='transparent'
+                  onChangeText={(username) => this.setState({username})}
+                  value={this.state.username}/>
+              {this.state.username? <DeleteInput function={() => this.setState({username: ''})}/>: null}
+            </View>
+            
+            <View style={styles.inputContainer}>
+              <TextInput style={styles.inputs}
+                  autoCapitalize="none"
+                  placeholder="Password"
+                  secureTextEntry={true}
+                  underlineColorAndroid='transparent'
+                  onChangeText={(password) => this.setState({password})}
+                  value={this.state.password}/>
+              {this.state.password? <DeleteInput function={() => this.setState({password: ''})}/>: null}
+              </View>
+            <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]} onPress={() => {this.props.loginUser(this.state.username, this.state.password)}}>
+              <Text style={styles.loginText}>Login</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]} onPress={() => {this.props.loginUser(this.state.username, this.state.password)}}>
-            <Text style={styles.loginText}>Login</Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.linkContainer} onPress={() => this.props.navigation.navigate("createUsername")}>
+                <Text style={styles.linkText}>Register</Text>
+            </TouchableOpacity>
+          </KeyboardAvoidingView>
+        </HideKeyboard>
 
-          <TouchableOpacity style={styles.linkContainer} onPress={() => this.props.navigation.navigate("createUsername")}>
-              <Text style={styles.linkText}>Register</Text>
-          </TouchableOpacity>
-        </KeyboardAvoidingView>
 
 /*        <TouchableOpacity style={styles.linkContainer}>
             <Text style={styles.linkText}>Forgot your password?</Text>
         </TouchableOpacity>*/
-
     );
   }
 }
@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
   inputIcon:{
     width:300,
     height:140,
+    marginVertical: -25,
     justifyContent: 'center',
   },
   buttonContainer: {

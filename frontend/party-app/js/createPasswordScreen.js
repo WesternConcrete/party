@@ -12,6 +12,7 @@ import {
 import Constants from 'expo-constants';
 import { Ionicons } from '@expo/vector-icons';
 import DeleteInput from "./helperJS/deleteInput"
+import HideKeyboard from "./helperJS/dismissKeyboard"
 
 const regex = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/
 
@@ -42,38 +43,40 @@ export default class createPassword extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-      <View style={styles.content}>
-        <View style={{padding: 15, alignItems: 'center'}}>
-          <Text style={styles.headerText}>Create Password</Text>
-          <Text style={styles.descriptionText}>Pick a password for your new account.</Text>
-        </View>
-        <View style={this.state.errMessage? styles.errInputContainer: styles.inputContainer}>
-          <TextInput style={styles.inputs}
-                autoCapitalize="none"
-                placeholder="Password"
-                keyboardType={Platform.OS === 'ios' ? 'ascii-capable' : 'visible-password'}
-                secureTextEntry={this.state.hidePassword}
-                underlineColorAndroid='transparent'
-                onChangeText={this.typePassword}
-                value={this.state.password}/>
-          {this.state.password? 
-            <TouchableOpacity style={{paddingRight: 12}} onPress={() => this.setState({hidePassword: !this.state.hidePassword})}>
-              <Ionicons
-                name={this.state.hidePassword? "eye-outline": "eye"}
-                size={18}
-                color="black"
-              />
-            </TouchableOpacity>: null}
-        </View>
-        {this.state.errMessage? <Text style={styles.errorText}>{this.state.errMessage}</Text>: null}
+      <HideKeyboard>
+        <View style={styles.container}>
+        <View style={styles.content}>
+          <View style={{padding: 15, alignItems: 'center'}}>
+            <Text style={styles.headerText}>Create Password</Text>
+            <Text style={styles.descriptionText}>Pick a password for your new account.</Text>
+          </View>
+          <View style={this.state.errMessage? styles.errInputContainer: styles.inputContainer}>
+            <TextInput style={styles.inputs}
+                  autoCapitalize="none"
+                  placeholder="Password"
+                  keyboardType={Platform.OS === 'ios' ? 'ascii-capable' : 'visible-password'}
+                  secureTextEntry={this.state.hidePassword}
+                  underlineColorAndroid='transparent'
+                  onChangeText={this.typePassword}
+                  value={this.state.password}/>
+            {this.state.password? 
+              <TouchableOpacity style={{paddingRight: 12}} onPress={() => this.setState({hidePassword: !this.state.hidePassword})}>
+                <Ionicons
+                  name={this.state.hidePassword? "eye-outline": "eye"}
+                  size={18}
+                  color="black"
+                />
+              </TouchableOpacity>: null}
+          </View>
+          {this.state.errMessage? <Text style={styles.errorText}>{this.state.errMessage}</Text>: null}
 
-        <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]} onPress={() => this.validatePassword(this.state.password)}>
-          <Text style={styles.loginText}>Next</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]} onPress={() => this.validatePassword(this.state.password)}>
+            <Text style={styles.loginText}>Next</Text>
+          </TouchableOpacity>
 
-      </View>
-      </View>
+        </View>
+        </View>
+      </HideKeyboard>
     );
   }
 }

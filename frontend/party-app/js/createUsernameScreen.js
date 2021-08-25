@@ -7,7 +7,9 @@ import {
   Button,
   TouchableOpacity,
   Image,
-  Alert
+  Alert,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import Constants from 'expo-constants';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,6 +19,8 @@ import {checkUsername} from "./helperJS/api"
 import consecutiveChecker from "./helperJS/consecutiveChecker"
 
 const regex = /^[A-Za-z0-9._]{0,20}$/
+
+import HideKeyboard from "./helperJS/dismissKeyboard"
 
 export default class createUsername extends React.Component {
   state = {
@@ -58,6 +62,7 @@ export default class createUsername extends React.Component {
 
   render() {
     return (
+      <HideKeyboard>
       <View style={styles.container}>
       <View style={styles.content}>
         <View style={{padding: 15, alignItems: 'center'}}>
@@ -80,6 +85,7 @@ export default class createUsername extends React.Component {
         </TouchableOpacity>
       </View>
       </View>
+      </HideKeyboard>
     );
   }
 }
