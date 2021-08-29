@@ -2,7 +2,8 @@ export const API_HOME = 'http://192.168.86.29:80'
 export const API_AUTHENTICATE = API_HOME + '/authenticate-user/'
 export const API_CHECK_USERNAME = API_HOME + '/create-username/'
 export const API_CREATE_USER = API_HOME + '/createUser/'
-
+export const API_CHANGE_NAME = API_HOME + '/changeName/'
+export const API_CHANGE_BDAY = API_HOME + '/changeBirthday/'
 
 export const loginAttempt = async (username, password) => {
   const response = await fetch(API_AUTHENTICATE, {
@@ -32,6 +33,26 @@ export const createUser = async (userData) => {
     method: 'POST',
     headers: {'content-type': 'application/json'},
     body: JSON.stringify(userData),
+  })
+  const json = await response.json()
+  return json
+}
+
+export const changeName = async (username, name) => {
+  const response = await fetch(API_CHANGE_NAME, {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({username: username, name: name}),
+  })
+  const json = await response.json()
+  return json
+}
+
+export const changeBirthday = async (username, birthday) => {
+  const response = await fetch(API_CHANGE_BDAY, {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({username: username, birthday: birthday}),
   })
   const json = await response.json()
   return json

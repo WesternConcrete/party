@@ -39,7 +39,7 @@ class MapScreen extends React.Component {
   		this.callNotif = true
   	}
   	if(this.callNotif) {
-  		this.fadeIn()
+  		setTimeout(() => this.fadeIn(), 3500)
   	}
   	
   }
@@ -78,7 +78,7 @@ class MapScreen extends React.Component {
 
 	componentDidMount() {
 		this._getLocationAsync()
-		setTimeout(() => this.notificationProcess(), 3500)
+		this.notificationProcess()
 
 	}
 
@@ -108,7 +108,7 @@ class MapScreen extends React.Component {
 		    <Animated.View
 		    	style={[styles.fadingContainer, {transform: [{translateY: this.state.notificationY}]}]}
         >
-        	<TouchableOpacity style={styles.notification} onPress={() => this.props.navigation.navigate('MainProfileScreen')}>
+        	<TouchableOpacity style={styles.notification} onPress={() => {this.props.navigation.navigate('MainProfileScreen'); this.fadeOut()}}>
           	<Text style={styles.fadingText}>{this.state.notificationMessage}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.fadeOut}>
@@ -128,8 +128,8 @@ class MapScreen extends React.Component {
 
 const mapStateToProps = state => ({
   location: state.location,
-  userImage: state.user.userData.profile_image,
-  userBday: state.user.userData.birthday,
+  userImage: state.user.profile_image,
+  userBday: state.user.birthday,
 })
 
 export default connect(mapStateToProps, {updateLocation: updateLocation})(MapScreen)

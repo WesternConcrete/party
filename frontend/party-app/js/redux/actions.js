@@ -8,6 +8,8 @@ export const LOGIN_SENT = 'LOG_IN_SENT'
 export const LOGIN_FULFILLED = 'LOG_IN_FULFILLED'
 export const LOGIN_REJECTED = 'LOG_IN_REJECTED'
 export const LOGOUT = 'LOGOUT'
+export const CHANGE_NAME = 'CHANGE_NAME'
+export const CHANGE_BDAY = 'CHANGE_BDAY'
 
 
 
@@ -25,6 +27,16 @@ export const addContact = newContact => ({
 export const updateLocation = location => ({
   type: UPDATE_LOCATION,
   payload: location,
+})
+
+export const changeNameAction = name => ({
+  type: CHANGE_NAME,
+  payload: name,
+})
+
+export const changeBday = bday => ({
+  type: CHANGE_BDAY,
+  payload: bday,
 })
 
 export const loginUser = (username, password) => async dispatch => {

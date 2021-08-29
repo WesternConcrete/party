@@ -9,8 +9,10 @@ import { connect } from 'react-redux'
 import MainProfileScreen from "./MainProfileScreen.js"
 import MapScreen from './MapScreen.js';
 import MainTabNav from "./MainTabNav.js"
-
+import ChangeName from "./ChangeName"
 import LoginStack from "./LoginStack"
+import ChangeBirthday from "./changeBirthday"
+
 
 const Stack = createStackNavigator();
 
@@ -24,7 +26,7 @@ class MainStack extends React.Component {
   render() {
 	  return (
 	    <NavigationContainer>
-	    	{ this.props.user.userData? 
+	    	{ this.props.user.user? 
 		    <Stack.Navigator
 		        screenOptions={({ navigation, route }) => ({
 		            headerShown: route.name !== "MainTabNav",
@@ -55,6 +57,9 @@ class MainStack extends React.Component {
 		    >
 		      <Stack.Screen name="MainTabNav" component={MainTabNav} options={{ cardStyleInterpolator: forFade }}/>
 		      <Stack.Screen name="MainProfileScreen" component={MainProfileScreen} options={{ cardStyleInterpolator: forFade }}/>
+		      <Stack.Screen name="ChangeName" component={ChangeName} options={{ cardStyleInterpolator: forFade }}/>
+		    	<Stack.Screen name="ChangeBirthday" component={ChangeBirthday} options={{ cardStyleInterpolator: forFade }}/>
+
 		    </Stack.Navigator>:
 		    <LoginStack/>
 		  	}

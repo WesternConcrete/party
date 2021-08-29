@@ -10,26 +10,30 @@ class UploadImage extends React.Component {
 
     render(){
         return (
+            <View style={{elevation:2,height:200,width:200,position:'relative',alignItems: 'center',overflow:'hidden',}}>
             <View style={imageUploaderStyles.container}>
                 {
-                    this.props.image  && <Image source={{ uri: this.props.image === imageLink? this.props.image: API_HOME + this.props.image }} style={{ width: 200, height: 200 }} />
+                    this.props.image  && <Image style={imageUploaderStyles.container} source={{ uri: this.props.image === imageLink? this.props.image: API_HOME + this.props.image }} style={{ width: 200, height: 200 }} />
                 }
                     
-                    <View style={imageUploaderStyles.uploadBtnContainer}>
+                    {/*<View style={imageUploaderStyles.uploadBtnContainer}>
                         <TouchableOpacity style={imageUploaderStyles.uploadBtn} >
                             <Text>{this.props.image === imageLink? 'Upload' : 'Change'} Image</Text>
                             <Ionicons name="camera" size={20} color="black" />
                         </TouchableOpacity>
-                    </View>
+                    </View>*/}
               
-
+            </View>
+                <TouchableOpacity style={{borderRadius:999, backgroundColor: '#515151', position: 'absolute', width: 50, height: 50, bottom: '0%', right: '5%', opacity: .8, justifyContent: 'center', alignItems: 'center'}}>
+                    <Ionicons style={{width: '100%', position: 'absolute', top: '7%', left: '13%'}} name={"add-circle-outline"} color={'white'} size={40} />
+                </TouchableOpacity>
             </View>
         );
     }
 }
 
 const mapStateToProps = state => ({
-  image: state.user.userData.profile_image || imageLink,
+  image: state.user.profile_image || imageLink,
 })
 
 export default connect(mapStateToProps)(UploadImage)

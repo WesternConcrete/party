@@ -44,7 +44,7 @@ export default class pickName extends React.Component {
                   autoCapitalize="none"
                   placeholder="Name (optional)"
                   underlineColorAndroid='transparent'
-                  onChangeText={(name) => this.setState({name, errMessage: null})}
+                  onChangeText={(name) => {if (name.length < 21) this.setState({name, errMessage: null})}}
                   value={this.state.name}/>
             {this.state.name? <DeleteInput function={() => this.setState({name: ''})}/>: null}
           </View>

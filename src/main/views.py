@@ -6,6 +6,7 @@ from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate
 from rest_framework import status
+import datetime
 
 
 from django.contrib.auth.models import User
@@ -40,7 +41,10 @@ class api_authenticate_user(View):
 			ex_user = ExtendedUser.objects.get(user=user)
 			serializer = ExtendedUserSerializer(ex_user)
 			data = dict(serializer.data)
+			if data['birthday'] != None:
+				data['birthday'] = data['birthday'][-5:] + '-' + data['birthday'][:4]
 			data['first_name'] = user.first_name
+			print(data)
 			response['user'] = data
 			code=status.HTTP_200_OK
 		elif username == '' or password == '': 
@@ -48,6 +52,7 @@ class api_authenticate_user(View):
 
 		else:
 			response['errMessage'] = 'Incorrect username or password'
+		print(response)
 		return JsonResponse(response, status=code)
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -77,3 +82,32 @@ class createUser(View):
 			user = User.objects.create_user(username=json['username'], password=json['password'])
 		ex_user = ExtendedUser.objects.create(user=user)
 		return JsonResponse({'username': json['username'], 'password': json['password']}, status=status.HTTP_200_OK)
+
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class changeName(View):
+	def get(self, request):
+		return JsonResponse({})
+
+	def post(self, request):
+		json = JSONParser().parse(request)
+		user = User.objects.get(username=json['username'])
+		user.first_name = json['name']
+		user.save()
+		return JsonResponse({'errMessage': None}, status=status.HTTP_200_OK)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class changeBirthday(View):
+	def get(self, request):
+		return JsonResponse({})
+
+	def post(self, request):
+		json = JSONParser().parse(request)
+		user = ExtendedUser.objects.get(user = User.objects.get(username=json['username']))
+		birthday = datetime.datetime.strptime(json['birthday'], '%Y-%m-%d')
+		print(birthday)
+		user.birthday = birthday
+		user.save()
+		return JsonResponse({'errMessage': None}, status=status.HTTP_200_OK)
+
