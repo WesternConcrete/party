@@ -28,18 +28,16 @@ const RightLine = () => (
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-class MainProfileScreen extends React.Component {
-	
-	componentDidMount () {
-	}
+const imageLink = "https://www.eguardtech.com/wp-content/uploads/2018/08/Network-Profile.png"
 
+
+class MainProfileScreen extends React.Component {
 
 	render() {
 		return(
 			<ScrollView style={styles.scrollContainer} contentContainerStyle={styles.container}>
 				
-
-				<UploadImage/>
+				<UploadImage image={this.props.image}/>
 
 
 				<View style={{flexDirection: 'row'}}>
@@ -89,7 +87,8 @@ const mapStateToProps = state => ({
   username: state.user.user,
   name: state.user.first_name,
   bday_formatted: state.user.birthday? months[Number(state.user.birthday.slice(0,2))-1] + ' ' + state.user.birthday.slice(3,5) + ' ' + state.user.birthday.slice(6): null,
-  bday: state.user.birthday
+  bday: state.user.birthday,
+  image: state.user.profile_image || imageLink,
 })
 
 

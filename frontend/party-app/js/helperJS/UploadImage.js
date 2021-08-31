@@ -2,11 +2,33 @@ import React from 'react';
 import { Image, View, Platform, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux'
-import { API_HOME } from "./api"
+import {store} from "../redux/store"
+
+import * as ImagePicker from 'expo-image-picker'
+
+import { API_HOME, changeImage } from "./api"
+import { changeProfileImage } from "../redux/actions.js"
+
 
 const imageLink = "https://www.eguardtech.com/wp-content/uploads/2018/08/Network-Profile.png"
 
 class UploadImage extends React.Component {
+
+    
+
+    addImage = async () =>  {
+        let _image = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4,3],
+          quality: 1,
+        });
+        if (_image.cancelled === true){
+            return null
+        }
+        const new_image = await changeImage(_image, this.props.username)
+        this.props.changeProfileImage(new_image.image)
+      };
 
     render(){
         return (
@@ -24,7 +46,7 @@ class UploadImage extends React.Component {
                     </View>*/}
               
             </View>
-                <TouchableOpacity style={{borderRadius:999, backgroundColor: '#515151', position: 'absolute', width: 50, height: 50, bottom: '0%', right: '5%', opacity: .8, justifyContent: 'center', alignItems: 'center'}}>
+                <TouchableOpacity style={{borderRadius:999, backgroundColor: '#515151', position: 'absolute', width: 50, height: 50, bottom: '0%', right: '5%', opacity: .8, justifyContent: 'center', alignItems: 'center'}} onPress={this.addImage}>
                     <Ionicons style={{width: '100%', position: 'absolute', top: '7%', left: '13%'}} name={"add-circle-outline"} color={'white'} size={40} />
                 </TouchableOpacity>
             </View>
@@ -33,10 +55,10 @@ class UploadImage extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  image: state.user.profile_image || imageLink,
+  username: state.user.user,
 })
 
-export default connect(mapStateToProps)(UploadImage)
+export default connect(mapStateToProps, {changeProfileImage})(UploadImage)
 
 const imageUploaderStyles=StyleSheet.create({
     container:{

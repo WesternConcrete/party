@@ -5,6 +5,10 @@ from django.http import Http404
 import datetime
 from datetime import date
 
+def upload_path(instance, filename):
+	return '/'.join(['profpic', filename])
+
+
 # Create your models here.
 
 class ExtendedUser(models.Model):
@@ -18,7 +22,7 @@ class ExtendedUser(models.Model):
 	my_parties = models.ManyToManyField('parties.Party',blank=True,related_name='my_parties')
 	blocked = models.ManyToManyField('self',blank=True, related_name='blocked')
 	blocked_by = models.ManyToManyField('self',blank=True, related_name='blocked_by')
-	profile_image = models.ImageField(null=True,blank=True) #may want to add default profile image after we figure out image format on frontend
+	profile_image = models.ImageField(upload_to=upload_path, null=True,blank=True) #may want to add default profile image after we figure out image format on frontend
 	last_latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
 	last_longitude = models.DecimalField(max_digits=9, decimal_places=6,blank=True, null=True)
 	pending_friend_requests = models.ManyToManyField("friendreq.FriendReq", blank=True)

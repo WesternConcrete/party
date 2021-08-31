@@ -1,12 +1,16 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.http import JsonResponse
-from rest_framework.parsers import JSONParser
+from rest_framework.parsers import JSONParser, MultiPartParser, FormParser, FileUploadParser
+from rest_framework.response import Response
+import os
 from django.views.decorators.csrf import csrf_exempt
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate
 from rest_framework import status
 import datetime
+from rest_framework.views import APIView
+from rest_framework import permissions
 
 
 from django.contrib.auth.models import User
@@ -110,4 +114,21 @@ class changeBirthday(View):
 		user.birthday = birthday
 		user.save()
 		return JsonResponse({'errMessage': None}, status=status.HTTP_200_OK)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class changeImage(APIView):
+
+	parser_classes= [FormParser, MultiPartParser, JSONParser]
+
+	def post(self, request, format=None):
+		image = request.data['profile_image']
+		user = request.data['user']
+		user = ExtendedUser.objects.get(user = User.objects.get(username=user))
+		old_image = user.profile_image
+		user.profile_image = image
+		user.save()
+		if bool(old_image):
+			os.remove('media/' + str(old_image))
+		return JsonResponse({'errMessage': None, 'image': '/media/' + str(user.profile_image)}, status=status.HTTP_200_OK)
+
 

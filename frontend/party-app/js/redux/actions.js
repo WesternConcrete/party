@@ -10,6 +10,7 @@ export const LOGIN_REJECTED = 'LOG_IN_REJECTED'
 export const LOGOUT = 'LOGOUT'
 export const CHANGE_NAME = 'CHANGE_NAME'
 export const CHANGE_BDAY = 'CHANGE_BDAY'
+export const CHANGE_IMAGE = 'CHANGE_IMAGE'
 
 
 
@@ -37,6 +38,11 @@ export const changeNameAction = name => ({
 export const changeBday = bday => ({
   type: CHANGE_BDAY,
   payload: bday,
+})
+
+export const changeProfileImage = image => ({
+  type: CHANGE_IMAGE,
+  payload: image,
 })
 
 export const loginUser = (username, password) => async dispatch => {

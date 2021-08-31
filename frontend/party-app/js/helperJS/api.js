@@ -4,6 +4,24 @@ export const API_CHECK_USERNAME = API_HOME + '/create-username/'
 export const API_CREATE_USER = API_HOME + '/createUser/'
 export const API_CHANGE_NAME = API_HOME + '/changeName/'
 export const API_CHANGE_BDAY = API_HOME + '/changeBirthday/'
+export const API_PROFILE_PIC = API_HOME + '/changeImage/'
+
+
+const createFormData = (image, username) => {
+  const data = new FormData();
+
+  data.append("user", username)
+
+  data.append('profile_image', {
+    uri: image.uri, // your file path string
+    name: username+ '.jpg',
+    type: 'image/jpg'
+  })
+
+
+  return data;
+};
+
 
 export const loginAttempt = async (username, password) => {
   const response = await fetch(API_AUTHENTICATE, {
@@ -57,3 +75,14 @@ export const changeBirthday = async (username, birthday) => {
   const json = await response.json()
   return json
 }
+
+export const changeImage = async (image, username) => {
+  const response = await fetch(API_PROFILE_PIC, {
+    method: 'POST',
+    headers: {'content-type': 'multipart/form-data'},
+    body: createFormData(image, username),
+  })
+  const json = await response.json()
+  return json
+}
+

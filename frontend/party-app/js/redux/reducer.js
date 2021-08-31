@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux'
 
-import {UPDATE_USER, UPDATE_CONTACT, UPDATE_LOCATION, LOGIN_FULFILLED, LOGIN_REJECTED, LOGOUT, CHANGE_NAME, CHANGE_BDAY} from './actions'
+import {UPDATE_USER, UPDATE_CONTACT, UPDATE_LOCATION, LOGIN_FULFILLED, LOGIN_REJECTED, LOGOUT, CHANGE_NAME, CHANGE_BDAY, CHANGE_IMAGE} from './actions'
 
 const merge = (prev, next) => Object.assign({}, prev, next)
 
@@ -63,6 +63,7 @@ const assignUser =  (state = null, action) => {
 
 const assignProfileImage =  (state = null, action) => {
   if (action.type === LOGIN_FULFILLED) return action.payload.profile_image
+  if (action.type === CHANGE_IMAGE) return action.payload
   if (action.type === LOGOUT) return null
   return state
 }
