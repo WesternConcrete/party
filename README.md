@@ -8,4 +8,17 @@
 
 <h3>Preview:</h3>
 
+Friends: (changing app "logo", this is simply a placeholder)
+
+![friends](friends.gif) 
+
+
+Profile Editing:
+
+![imagepicker](imagepicker.gif) ![bdaypicker](bdaypicker.gif)
+
+
+Signup:
+
+![signup](signup.gif) 
 
