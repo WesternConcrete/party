@@ -1,4 +1,4 @@
-export const API_HOME = 'http://10.144.85.243:80'
+export const API_HOME = 'http://10.151.81.152:80'
 const API_AUTHENTICATE = API_HOME + '/authenticate-user/'
 const API_CHECK_USERNAME = API_HOME + '/create-username/'
 const API_CREATE_USER = API_HOME + '/createUser/'

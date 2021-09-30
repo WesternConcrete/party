@@ -97,7 +97,9 @@ class MapScreen extends React.Component {
       this.props.assignFriendData(friendData)
       console.log('changing friends')
     }
-  }
+    const {friendData} = await formatFriendData(friends)
+    this.props.assignFriendData(friendData)
+  } 
 
 
 
