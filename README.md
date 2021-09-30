@@ -10,15 +10,15 @@
 
 Friends: (changing app "logo", this is simply a placeholder)
 
-![friends](friends.gif) 
+![friends](app-preview/friends.gif) 
 
 
 Profile Editing:
 
-![imagepicker](imagepicker.gif) ![bdaypicker](bdaypicker.gif)
+![imagepicker](app-preview/imagepicker.gif) ![bdaypicker](app-preview/bdaypicker.gif)
 
 
 Signup:
 
-![signup](signup.gif) 
+![signup](app-preview/signup.gif) 
 
