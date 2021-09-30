@@ -17,6 +17,11 @@ class UploadImage extends React.Component {
     
 
     addImage = async () =>  {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          console.log('Permission to access camera roll was denied');
+          return
+        }
         let _image = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
@@ -28,6 +33,7 @@ class UploadImage extends React.Component {
         }
         const new_image = await changeImage(_image, this.props.username)
         this.props.changeProfileImage(new_image.image)
+
       };
 
     render(){
@@ -35,7 +41,7 @@ class UploadImage extends React.Component {
             <View style={{elevation:2,height:200,width:200,position:'relative',alignItems: 'center',overflow:'hidden',}}>
             <View style={imageUploaderStyles.container}>
                 {
-                    this.props.image  && <Image style={imageUploaderStyles.container} source={{ uri: this.props.image === imageLink? this.props.image: API_HOME + this.props.image }} style={{ width: 200, height: 200 }} />
+                    this.props.image  && <Image source={{ uri: this.props.image === imageLink? this.props.image: API_HOME + this.props.image, cache: 'reload' }} style={{ width: 200, height: 200 }} />
                 }
                     
                     {/*<View style={imageUploaderStyles.uploadBtnContainer}>

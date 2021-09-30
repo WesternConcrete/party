@@ -9,8 +9,6 @@ def upload_path(instance, filename):
 	return '/'.join(['profpic', filename])
 
 
-# Create your models here.
-
 class ExtendedUser(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	friends = models.ManyToManyField('self',blank=True)

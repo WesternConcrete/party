@@ -11,6 +11,9 @@ from rest_framework import status
 import datetime
 from rest_framework.views import APIView
 from rest_framework import permissions
+from PIL import Image
+from django.db.models import Q
+from django.db.models.functions import Length
 
 
 from django.contrib.auth.models import User
@@ -48,7 +51,6 @@ class api_authenticate_user(View):
 			if data['birthday'] != None:
 				data['birthday'] = data['birthday'][-5:] + '-' + data['birthday'][:4]
 			data['first_name'] = user.first_name
-			print(data)
 			response['user'] = data
 			code=status.HTTP_200_OK
 		elif username == '' or password == '': 
@@ -85,6 +87,10 @@ class createUser(View):
 		else:
 			user = User.objects.create_user(username=json['username'], password=json['password'])
 		ex_user = ExtendedUser.objects.create(user=user)
+		filename = json['username'] + '.jpg'
+		img = Image.new('RGB', (1, 1), color = 'red')
+		print(img)
+		img.save('media/profpic/'+ json['username']+ '.jpg')
 		return JsonResponse({'username': json['username'], 'password': json['password']}, status=status.HTTP_200_OK)
 
 
@@ -130,5 +136,102 @@ class changeImage(APIView):
 		if bool(old_image):
 			os.remove('media/' + str(old_image))
 		return JsonResponse({'errMessage': None, 'image': '/media/' + str(user.profile_image)}, status=status.HTTP_200_OK)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class getFriendInfo(View):
+	def get(self, request):
+		return JsonResponse({})
+
+	def post(self, request):
+		username = JSONParser().parse(request)['username']
+		data = {}
+		user = User.objects.get(username=username)
+		ex_user = ExtendedUser.objects.get(user = user)
+		image = str(ex_user.profile_image)
+		if bool(image):
+			data['url'] = '/media/' + image
+		else: 
+			data['url'] = None
+		data['name'] = user.first_name
+		return JsonResponse(data, status=status.HTTP_200_OK)
+		
+@method_decorator(csrf_exempt, name='dispatch')
+class updateFriends(View):
+	def get(self, request):
+		return JsonResponse({})
+
+	def post(self, request):
+		username = JSONParser().parse(request)['username']
+		user = User.objects.get(username=username)
+		ex_user = ExtendedUser.objects.get(user = user)
+		print(ex_user.friends.all())
+		friends = []
+		for friend in ex_user.friends.all():
+			friends.append(str(friend))
+		print(friends)
+		return JsonResponse({'friends': friends}, status=status.HTTP_200_OK)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class formatFriendData(View):
+	def get(self, request):
+		return JsonResponse({})
+
+	def post(self, request):
+		friends = JSONParser().parse(request)['friends']
+		arr = []
+		for friend in friends: 
+			user = User.objects.get(username=friend)
+			ex_user = ExtendedUser.objects.get(user = user)
+			image = str(ex_user.profile_image)
+			if bool(image):
+				image = '/media/' + image
+			else: 
+				image = None
+			friend_obj = {'username':friend, 'name':user.first_name, 'url': image}
+			arr.append(friend_obj)
+		return JsonResponse({'friendData': arr}, status=status.HTTP_200_OK)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class findFriends(View):
+	def get(self, request):
+		return JsonResponse({})
+
+	def post(self, request):
+		search = JSONParser().parse(request)['search']
+		search_results = ExtendedUser.objects.filter(Q(user__username__contains=search) | Q(user__first_name__contains=search))
+		print(search_results)
+		data=[]
+		for user in search_results:
+			image = str(user.profile_image)
+			if bool(image):
+				image = '/media/' + image
+			else: 
+				image = None
+			friend_obj = {'username':str(user.user), 'name':user.user.first_name, 'url': image}
+			data.append(friend_obj)
+		print(data)
+		return JsonResponse({'data': data}, status=status.HTTP_200_OK)
+
+
+
+
+
+
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class getFriendRequests(View):
+	def get(self, request):
+		return JsonResponse({})
+
+	def post(self, request):
+		username = JSONParser().parse(request)['username']
+		ex_user = ExtendedUser.objects.get(user = User.objects.get(username=username))
+		friend_requests = ex_user.pending_friend_requests.all()
+		arr = []
+		for friend_request in friend_requests:
+			obj = {'from': str(friend_request.from_user), 'to': str(friend_request.to_user)}
+			arr.append(obj)
+		return JsonResponse({'friend_requests': arr}, status=status.HTTP_200_OK)
 
 

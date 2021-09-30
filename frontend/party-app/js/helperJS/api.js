@@ -1,11 +1,15 @@
-export const API_HOME = 'http://192.168.86.29:80'
-export const API_AUTHENTICATE = API_HOME + '/authenticate-user/'
-export const API_CHECK_USERNAME = API_HOME + '/create-username/'
-export const API_CREATE_USER = API_HOME + '/createUser/'
-export const API_CHANGE_NAME = API_HOME + '/changeName/'
-export const API_CHANGE_BDAY = API_HOME + '/changeBirthday/'
-export const API_PROFILE_PIC = API_HOME + '/changeImage/'
-
+export const API_HOME = 'http://10.144.85.243:80'
+const API_AUTHENTICATE = API_HOME + '/authenticate-user/'
+const API_CHECK_USERNAME = API_HOME + '/create-username/'
+const API_CREATE_USER = API_HOME + '/createUser/'
+const API_CHANGE_NAME = API_HOME + '/changeName/'
+const API_CHANGE_BDAY = API_HOME + '/changeBirthday/'
+const API_PROFILE_PIC = API_HOME + '/changeImage/'
+const API_GET_FRIEND_INFO = API_HOME + '/getFriendInfo/'
+const API_UPDATE_FRIENDS = API_HOME + '/updateFriends/'
+const API_FORMAT_FRIEND_DATA = API_HOME + '/formatFriendData/'
+const API_FIND_FRIENDS = API_HOME + '/findFriends/'
+const API_GET_FRIEND_REQUESTS = API_HOME + '/getFriendRequests/'
 
 const createFormData = (image, username) => {
   const data = new FormData();
@@ -85,4 +89,56 @@ export const changeImage = async (image, username) => {
   const json = await response.json()
   return json
 }
+
+export const getFriendInfo = async (username) => {
+  const response = await fetch(API_GET_FRIEND_INFO, {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({username: username}),
+  })
+  const json = await response.json()  
+  return json
+}
+
+export const updateFriends = async (username) => {
+  const response = await fetch(API_UPDATE_FRIENDS, {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({username: username}),
+  })
+  const json = await response.json()  
+  return json
+}
+
+export const formatFriendData = async (friends) => {
+  const response = await fetch(API_FORMAT_FRIEND_DATA, {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({friends}),
+  })
+  const json = await response.json()  
+  return json
+}
+
+export const findFriends = async (search) => {
+  const response = await fetch(API_FIND_FRIENDS, {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({search}),
+  })
+  const json = await response.json()  
+  return json
+}
+
+export const getFriendRequests = async (username) => {
+  const response = await fetch(API_GET_FRIEND_REQUESTS, {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({username}),
+  })
+  const json = await response.json()  
+  return json
+}
+
+
 

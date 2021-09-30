@@ -50,7 +50,7 @@ export default class createUsername extends React.Component {
       } else if (username.length > 20){
         this.setState({errMessage: "Usernames must be less than 20 characters."})
       } else if (username === ''){
-        this.setState({errMessage: "Input a username."})
+        this.setState({username, errMessage: "Input a username."})
       } else {
         this.setState({username, errMessage: null})
       }

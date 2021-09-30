@@ -11,13 +11,19 @@ export const LOGOUT = 'LOGOUT'
 export const CHANGE_NAME = 'CHANGE_NAME'
 export const CHANGE_BDAY = 'CHANGE_BDAY'
 export const CHANGE_IMAGE = 'CHANGE_IMAGE'
-
-
+export const REPLACE_FRIENDS = 'REPLACE_FRIENDS'
+export const ASSIGN_FRIENDDATA = 'ASSIGN_FRIENDDATA'
+export const ASSIGN_FRIEND_REQUESTS = 'ASSIGN_FRIEND_REQUESTS'
 
 // action creators
 export const updateUser = update => ({
   type: UPDATE_USER,
   payload: update,
+})
+
+export const loadFriendRequest = requests => ({
+  type: ASSIGN_FRIEND_REQUESTS,
+  payload: requests,
 })
 
 export const addContact = newContact => ({
@@ -28,6 +34,16 @@ export const addContact = newContact => ({
 export const updateLocation = location => ({
   type: UPDATE_LOCATION,
   payload: location,
+})
+
+export const replaceFriends = friends => ({
+  type: REPLACE_FRIENDS,
+  payload: friends,
+})
+
+export const assignFriendData = friendData => ({
+  type: ASSIGN_FRIENDDATA,
+  payload: friendData,
 })
 
 export const changeNameAction = name => ({

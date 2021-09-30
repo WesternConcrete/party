@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux'
 
-import {UPDATE_USER, UPDATE_CONTACT, UPDATE_LOCATION, LOGIN_FULFILLED, LOGIN_REJECTED, LOGOUT, CHANGE_NAME, CHANGE_BDAY, CHANGE_IMAGE} from './actions'
+import {UPDATE_USER, UPDATE_CONTACT, UPDATE_LOCATION, LOGIN_FULFILLED, LOGIN_REJECTED, LOGOUT, CHANGE_NAME, CHANGE_BDAY, CHANGE_IMAGE, REPLACE_FRIENDS, ASSIGN_FRIENDDATA, ASSIGN_FRIEND_REQUESTS} from './actions'
 
 const merge = (prev, next) => Object.assign({}, prev, next)
 
@@ -75,13 +75,40 @@ const assignName = (state = null, action) => {
   return state
 }
 
+const assignFriends =  (state = [], action) => {
+  if (action.type === LOGIN_FULFILLED) return action.payload.friends
+  if (action.type === LOGOUT) return []
+  if (action.type === REPLACE_FRIENDS) return action.payload
+  return state
+}
+
+const assignFriendData =  (state = [], action) => {
+  if (action.type === ASSIGN_FRIENDDATA) return action.payload
+  return state
+}
+
+const assignGroups =  (state = [], action) => {
+  if (action.type === LOGIN_FULFILLED) return action.payload.groups
+  if (action.type === LOGOUT) return []
+  return state
+}
+
+const assignFriendRequests =  (state = [], action) => {
+  if (action.type === ASSIGN_FRIEND_REQUESTS) return action.payload
+  return state
+}
+
+
 const combinedUserReducer = combineReducers({
   attending_parties: assignParties,
   birthday: assignBirthday,
-  errMessage: loginErrMessage,
   user: assignUser,
   profile_image: assignProfileImage,
   first_name: assignName,
+  friends: assignFriends,
+  groups: assignGroups,
+  errMessage: loginErrMessage,
+  friendData: assignFriendData,
 })
 
 // blocked: 
@@ -108,6 +135,7 @@ const reducer = combineReducers({
   location: locationReducer,
   readies: readyReducer,
   user: combinedUserReducer,
+  friendRequests: assignFriendRequests
 })
 
 export default reducer

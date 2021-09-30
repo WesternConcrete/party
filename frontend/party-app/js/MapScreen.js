@@ -7,13 +7,27 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 
 import {store} from "./redux/store"
-import { updateLocation } from "./redux/actions.js"
+import { updateLocation, replaceFriends, assignFriendData } from "./redux/actions.js"
 import { connect } from 'react-redux'
 
-import {API_HOME} from "./helperJS/api"
+import {API_HOME, updateFriends, formatFriendData} from "./helperJS/api"
 import mapStyle from "./mapstyle.js"
 import Sidebars from "./mapview_sidebars.js"
 
+function arraysMatch(arr1, arr2) {
+
+  // Check if the arrays are the same length
+  if (arr1.length !== arr2.length) return false;
+
+  // Check if all items exist and are in the same order
+  for (var i = 0; i < arr1.length; i++) {
+    if (arr1[i] !== arr2[i]) return false;
+  }
+
+  // Otherwise, return true
+  return true;
+
+};
 
 class MapScreen extends React.Component {
 
@@ -73,14 +87,26 @@ class MapScreen extends React.Component {
       });
 			let coords = Object.assign({...this.props.location}, location.coords)
 			this.props.updateLocation(coords)
-			console.log(store.getState())
 	}
+
+  compareAndCollectFriends = async () => {
+    const { friends } = await updateFriends(this.props.username)
+    if (!arraysMatch(friends, this.props.friends)){
+      this.props.replaceFriends(friends)
+      const {friendData} = await formatFriendData(friends)
+      this.props.assignFriendData(friendData)
+      console.log('changing friends')
+    }
+  }
+
+
 
 	componentDidMount() {
 		this._getLocationAsync()
 		this.notificationProcess()
-
-	}
+//function that gets all their new friends from data. possible makes async request to compare current friends with database of friends, if different, replace current friends with list in database
+    this.compareAndCollectFriends()
+  }
 
 	_profileImage = () => {
 		if (this.props.userImage !== null){
@@ -130,9 +156,11 @@ const mapStateToProps = state => ({
   location: state.location,
   userImage: state.user.profile_image,
   userBday: state.user.birthday,
+  friends: state.user.friends,
+  username: state.user.user,
 })
 
-export default connect(mapStateToProps, {updateLocation: updateLocation})(MapScreen)
+export default connect(mapStateToProps, {updateLocation, replaceFriends, assignFriendData})(MapScreen)
 //uri: "https://www.eguardtech.com/wp-content/uploads/2018/08/Network-Profile.png"
 //temporary \/\/\/
 class ProfileImage extends React.Component { 

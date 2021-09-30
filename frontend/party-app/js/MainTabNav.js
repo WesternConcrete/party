@@ -4,28 +4,37 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
+import FriendsTabNav from "./FriendsTabNav";
 import MapScreen from './MapScreen.js';
 import FriendsScreen from './FriendsScreen.js';
 import PartysScreen from './PartysScreen.js';
 
 const Tab = createMaterialTopTabNavigator()
 
+function Placeholder() {
+  return(
+    <View style={styles.placeholder}/>
+  )
+}
+
 export default function MainTabNav() {
   return ( 
 
-        <Tab.Navigator
+        <Tab.Navigator style={styles.container}
           initialRouteName="Map"
           screenOptions={({ route }) => ({
             tabBarStyle: { 
               backgroundColor: 'black',
-              borderRadius: 20,
               opacity: .8,
               position: 'absolute',
               width: '100%',
-              bottom: -20,
-              height: 85,
+              bottom: 0,
+              height: 50,
             },
-            tabBarLabelStyle: { fontSize: 10, color: "white" },
+            
+            lazy: true,
+            lazyPlaceholder: Placeholder,
+            tabBarLabelStyle: {fontSize: 10, color: "white" },
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
 
@@ -33,7 +42,7 @@ export default function MainTabNav() {
                 case 'Map':
                   focused? iconName = 'map': iconName = 'map-outline';
                   break;
-                case 'Friends':
+                case 'People':
                   focused? iconName = 'people': iconName = 'people-outline';
                   break;
                 case 'Partys':
@@ -43,14 +52,16 @@ export default function MainTabNav() {
                   break;
               }
 
-              return <Ionicons name={iconName} color={'white'} size={24} />;
-            }
+              return <Ionicons style={focused? {opacity:1}:{opacity:.45}} name={iconName} color={'white'} size={24} />;
+            },
           })}
           tabBarPosition= 'bottom'
+
         >
-          <Tab.Screen name="Friends" component={FriendsScreen} />
-          <Tab.Screen name="Map" component={MapScreen} />
-          <Tab.Screen name="Partys" component={PartysScreen} />
+          <Tab.Screen name="Partys" component={PartysScreen} options={{tabBarLabel: ''}}/>
+          <Tab.Screen name="Map" component={MapScreen} options={{tabBarLabel: ''}}/>
+          <Tab.Screen name="People" component={FriendsTabNav} options={{tabBarLabel: ''}}/>
+          
 
 
         </Tab.Navigator>
@@ -59,19 +70,11 @@ export default function MainTabNav() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#000',
   },
-  tabBarBackground: {
-    position: 'absolute', 
-    backgroundColor: 'black',
-    opacity: .6,
-    borderRadius: 20,
-    width: "100%",
-    height: "10%",
-    bottom: 50,
+  placeholder: {
+    backgroundColor: '#40364f',
+    flex: 1,
   },
   
 });
